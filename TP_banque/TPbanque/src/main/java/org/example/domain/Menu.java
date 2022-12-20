@@ -100,6 +100,21 @@ public class Menu {
     }
 
     public static void addClient(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Entre l'id du compte : ");
+        Long id_a = sc.nextLong();
+        Compte compte = em.find(Compte.class,id_a);
+        System.out.println("Entre l'id du client : ");
+        Long id_b = sc.nextLong();
+        Client client = em.find(Client.class,id_b);
+        List<Client> newliste = compte.getClients();
+        newliste.add(client);
+        compte.setClients(newliste);
+        em.persist(compte);
+        List<Compte> comptes = client.getComptes();
+        comptes.add(compte);
+        client.setComptes(comptes);
+        em.persist(client);
 
     }
 
