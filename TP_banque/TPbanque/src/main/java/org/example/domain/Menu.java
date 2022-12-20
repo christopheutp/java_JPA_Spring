@@ -29,7 +29,7 @@ public class Menu {
 
     public static void exo() {
         System.out.println("######## TP Banque ######## ");
-        em.getTransaction().begin();
+     //   em.getTransaction().begin();
         Scanner sc = new Scanner(System.in);
         int choix =0;
         do{
@@ -48,13 +48,13 @@ public class Menu {
                         addClient();
                         break;
                     case 4 :
-                        em.getTransaction().commit();
+                       // em.getTransaction().commit();
                         afficheAll();
-                        em.getTransaction().begin();
+                       // em.getTransaction().begin();
                         break;
                     case 5 :
                         System.out.println("Aurevoir");
-                        em.getTransaction().commit();
+                      //  em.getTransaction().commit();
                         em.close();
                         emf.close();
                         break;
@@ -75,6 +75,7 @@ public class Menu {
     }
 
     public static void create_compte(){
+        em.getTransaction().begin();
         Scanner sc = new Scanner(System.in);
         System.out.println("Entre l'id du client : ");
         Long id_c = sc.nextLong();
@@ -102,10 +103,11 @@ public class Menu {
         malistcmp.add(compte);
         client.setComptes(malistcmp);
         em.persist(compte);
-
+        em.getTransaction().commit();
     }
 
     public static void addClient(){
+        em.getTransaction().begin();
         Scanner sc = new Scanner(System.in);
         System.out.println("Entre l'id du compte : ");
         Long id_a = sc.nextLong();
@@ -121,10 +123,11 @@ public class Menu {
         comptes.add(compte);
         client.setComptes(comptes);
         em.persist(client);
-
+        em.getTransaction().commit();
     }
 
     public static void afficheAll(){
+        em.getTransaction().begin();
         System.out.println("##############  Affichage informations ############## ");
         Query query= em.createQuery("select a from Agence a");
         List<Agence> agences = query.getResultList();
@@ -140,9 +143,11 @@ public class Menu {
             }
             System.out.println("######################");
         }
+        em.getTransaction().commit();
     }
 
     public static void creation(){
+        em.getTransaction().begin();
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Entrer l'adresse de l'agence");
@@ -191,6 +196,6 @@ public class Menu {
         List<Compte> listecmpagence = new ArrayList<>();
         listecmpagence.add(compte);
         em.persist(agence);
-
+        em.getTransaction().commit();
     }
 }
