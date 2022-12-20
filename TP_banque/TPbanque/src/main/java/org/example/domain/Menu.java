@@ -195,6 +195,7 @@ public class Menu {
         em.persist(compte);
         List<Compte> listecmpagence = new ArrayList<>();
         listecmpagence.add(compte);
+        agence.setComptes(listecmpagence);
         em.persist(agence);
         em.getTransaction().commit();
     }
