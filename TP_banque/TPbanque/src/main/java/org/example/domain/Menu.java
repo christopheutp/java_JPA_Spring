@@ -23,7 +23,8 @@ public class Menu {
         System.out.println("1 - Créer tout");
         System.out.println("2 - Créer un compte");
         System.out.println("3 - Ajouter un client à un compte");
-        System.out.println("4 - Exit");
+        System.out.println("4 - Afficher les informations");
+        System.out.println("5 - Exit");
     }
 
     public static void exo() {
@@ -33,7 +34,7 @@ public class Menu {
         int choix =0;
         do{
             try{
-                afficheAll();
+              //  afficheAll();
                 aff_menu();
                 choix = sc.nextInt();
                 switch (choix){
@@ -47,6 +48,11 @@ public class Menu {
                         addClient();
                         break;
                     case 4 :
+                        em.getTransaction().commit();
+                        afficheAll();
+                        em.getTransaction().begin();
+                        break;
+                    case 5 :
                         System.out.println("Aurevoir");
                         em.getTransaction().commit();
                         em.close();
@@ -62,7 +68,7 @@ public class Menu {
                 aff_menu();
             }
 
-        }while(choix != 4);
+        }while(choix != 5);
 
 
 
