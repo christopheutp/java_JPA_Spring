@@ -182,7 +182,9 @@ public class Menu {
         client.setComptes(malistedecompte);
        // client.getComptes().add(compte);
         em.persist(compte);
-
+        List<Compte> listecmpagence = new ArrayList<>();
+        listecmpagence.add(compte);
+        em.persist(agence);
 
     }
 }
