@@ -28,4 +28,14 @@ public class PersonneController {
     @GetMapping("/{id}")
     public String getPersonne(@PathVariable Integer id){
         return "Ma page pour afficher une seule personne avec l'id "+id;}
+
+    @PostMapping("")
+    public Personne postPersonne(@RequestBody Personne personne){
+        return personne;
+    }
+
+   /* @PostMapping("")
+    public Personne postPersonne(@RequestParam String nom, @RequestParam String prenom) {
+        return new Personne(1, nom, prenom);
+    }*/
 }
