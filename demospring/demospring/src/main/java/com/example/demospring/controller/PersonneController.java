@@ -1,23 +1,31 @@
 package com.example.demospring.controller;
 
 
+import com.example.demospring.entity.Personne;
+import com.example.demospring.interfaces.IPersonneService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @ResponseBody
 @RequestMapping("/personne")
 public class PersonneController {
 
-    @GetMapping("/")
-    public String getPersonnes(){return "Ma page pour affichers une liste de personnes";}
+    @Autowired
+    private IPersonneService personneService;
+
+    @GetMapping("")
+   // public String getPersonnes(){return "Ma page pour affichers une liste de personnes";}
+    public List<Personne> getPersonnes() { return personneService.getPersonnes();}
 
     @PostMapping("/post")
     public String postPersonne(){return "Ma page pour poster une personne";}
 
-    @GetMapping("/id")
-    public String getPersonne(){ return "Ma page pour afficher une seule personne";}
+
+    @GetMapping("/{id}")
+    public String getPersonne(@PathVariable Integer id){
+        return "Ma page pour afficher une seule personne avec l'id "+id;}
 }
