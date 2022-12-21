@@ -15,10 +15,12 @@ import java.util.*;
 
 public class Menu {
 
+    // creation de mon EnityManager
     private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa_tp1");
 
     private static EntityManager em = emf.createEntityManager();
 
+    // preparation d'un affichage pour mon menu
     public static void aff_menu(){
         System.out.println("1 - Créer tout");
         System.out.println("2 - Créer un compte");
@@ -27,6 +29,8 @@ public class Menu {
         System.out.println("5 - Exit");
     }
 
+
+    // methode static qui va me permettre de lancer mon menu
     public static void exo() {
         System.out.println("######## TP Banque ######## ");
      //   em.getTransaction().begin();
@@ -35,21 +39,21 @@ public class Menu {
         do{
             try{
               //  afficheAll();
-                aff_menu();
+                aff_menu();  // utilisation de l'affichage pour mon menu
                 choix = sc.nextInt();
                 switch (choix){
                     case 1 :
-                        creation();
+                        creation();  // methode pour creer une agence un compte et un client
                         break;
                     case 2 :
-                        create_compte();
+                        create_compte(); // methode pour creer un compte (dans une agence existante et pour un client existant)
                         break;
                     case 3 :
-                        addClient();
+                        addClient(); // rajout d'un proprietaire (client existant) pour un compte existant
                         break;
                     case 4 :
                        // em.getTransaction().commit();
-                        afficheAll();
+                        afficheAll();  // affichage des informations
                        // em.getTransaction().begin();
                         break;
                     case 5 :
@@ -59,23 +63,24 @@ public class Menu {
                         emf.close();
                         break;
                     default:
-                        System.out.println("Commande invalide réessayer");
+                        System.out.println("Commande invalide réessayer"); // si on ne rentre dans aucune case
                         break;
                 }
 
-            }catch (InputMismatchException ex){
+            }catch (InputMismatchException ex){  // prise en compte si l'utilsateur tape autre chose qu'un entier
                 System.out.println("Veuillez entrer un entier");
                 aff_menu();
             }
 
-        }while(choix != 5);
+        }while(choix != 5); // Pour quitter mon menu l'utilisateur doit taper 5
 
 
 
     }
 
     public static void create_compte(){
-        em.getTransaction().begin();
+        em.getTransaction().begin();  // debut de ma transaction
+        // recuperation des informations ( client et agence par leur id)
         Scanner sc = new Scanner(System.in);
         System.out.println("Entre l'id du client : ");
         Long id_c = sc.nextLong();
@@ -83,6 +88,7 @@ public class Menu {
         System.out.println("Entre l'id de l'agence : ");
         Long id_a = sc.nextLong();
         Agence agence = em.find(Agence.class,id_a);
+        // debut creation d'un nouveau compte
         System.out.println("Entrer le libellé du compte : ");
         String libelle = sc.next();
         System.out.println("Entre l'IBAN :");
@@ -93,6 +99,7 @@ public class Menu {
         compte.setLibelle(libelle);
         compte.setIban(iban);
         compte.setSolde(solde);
+        // ajout de ce compte a l'agence selectionner et ajout du client selectionner comme titulaire du compte
         compte.setAgence(agence);
         List<Client> listcl = new ArrayList<>();
         listcl.add(client);
@@ -103,11 +110,13 @@ public class Menu {
         malistcmp.add(compte);
         client.setComptes(malistcmp);
         em.persist(compte);
+        // commit de ma transaction
         em.getTransaction().commit();
     }
 
     public static void addClient(){
-        em.getTransaction().begin();
+        em.getTransaction().begin(); // debut de ma transaction
+        // recuperation du compte et du client par leurs id
         Scanner sc = new Scanner(System.in);
         System.out.println("Entre l'id du compte : ");
         Long id_a = sc.nextLong();
@@ -115,6 +124,7 @@ public class Menu {
         System.out.println("Entre l'id du client : ");
         Long id_b = sc.nextLong();
         Client client = em.find(Client.class,id_b);
+        // ajout du client selectionner a la liste des titulaires du compte
         List<Client> newliste = compte.getClients();
         newliste.add(client);
         compte.setClients(newliste);
@@ -123,14 +133,17 @@ public class Menu {
         comptes.add(compte);
         client.setComptes(comptes);
         em.persist(client);
+        // commit de ma transaction
         em.getTransaction().commit();
     }
 
     public static void afficheAll(){
-        em.getTransaction().begin();
+        em.getTransaction().begin(); // debut de ma transaction
         System.out.println("##############  Affichage informations ############## ");
+        // requete pour recuperer la liste des agences
         Query query= em.createQuery("select a from Agence a");
         List<Agence> agences = query.getResultList();
+        // parcours de la liste des agences pour afficher les informations
         for(Agence a : agences){
             System.out.println("######################");
             System.out.println("Agence avec l'id : "+a.getId()+" a l'adresse : "+a.getAdresse());
@@ -143,18 +156,19 @@ public class Menu {
             }
             System.out.println("######################");
         }
-        em.getTransaction().commit();
+        em.getTransaction().commit(); // commit de ma transaction
     }
 
     public static void creation(){
-        em.getTransaction().begin();
+        em.getTransaction().begin(); // debut transaction
         Scanner sc = new Scanner(System.in);
-
+        // creation de mon agence
         System.out.println("Entrer l'adresse de l'agence");
         String adresse = sc.nextLine();
         Agence agence = new Agence();
         agence.setAdresse(adresse);
         em.persist(agence);
+        // creation de mon client
         Client client = new Client();
         System.out.println("Entrer le nom");
         String nom = sc.next();
@@ -172,7 +186,7 @@ public class Menu {
         client.setPrenom(prenom);
         client.setNaissance_d(date);
         em.persist(client);
-
+        // creation de mon compte
         System.out.println("Entrer le libellé du compte : ");
         String libelle = sc.next();
         System.out.println("Entrer l'IBAN");
@@ -183,6 +197,7 @@ public class Menu {
         compte.setLibelle(libelle);
         compte.setIban(iban);
         compte.setSolde(solde);
+        // Relation entre mon agence le compte et le client cree
         compte.setAgence(agence);
         List<Client> malistedecient = new ArrayList<>();
         malistedecient.add(client);
@@ -197,6 +212,6 @@ public class Menu {
         listecmpagence.add(compte);
         agence.setComptes(listecmpagence);
         em.persist(agence);
-        em.getTransaction().commit();
+        em.getTransaction().commit(); // commit de ma transaction
     }
 }
