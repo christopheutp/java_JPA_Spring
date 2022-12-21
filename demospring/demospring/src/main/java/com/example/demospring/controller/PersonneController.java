@@ -4,6 +4,7 @@ package com.example.demospring.controller;
 import com.example.demospring.entity.Personne;
 import com.example.demospring.interfaces.IPersonneService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public class PersonneController {
 
     @Autowired
+    @Qualifier("personne2Service")
     private IPersonneService personneService;
 
     @GetMapping("")
