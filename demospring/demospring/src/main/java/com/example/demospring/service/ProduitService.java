@@ -32,7 +32,10 @@ public class ProduitService implements IDAO<Produit> {
 
     @Override
     public boolean update(Produit o) {
-        return false;
+        session.beginTransaction();
+        session.update(o);
+        session.getTransaction().commit();
+        return true;
     }
 
     @Override

@@ -41,4 +41,20 @@ public class ProduitController {
         return null;
     }
 
+    @PostMapping("/update/{id}")
+    public Produit updateProduit(@PathVariable("id") Integer id,@RequestBody Produit produit){
+        Produit exisProduit = produitService.findById(id);
+        if(exisProduit != null) {
+            exisProduit.setDateAchat(produit.getDateAchat());
+            exisProduit.setMarque(produit.getMarque());
+            exisProduit.setReference(produit.getReference());
+            exisProduit.setStock(produit.getStock());
+            exisProduit.setPrix(produit.getPrix());
+            if(produitService.update(exisProduit)) {
+                return exisProduit;
+            }
+        }
+        return exisProduit;
+    }
+
 }
