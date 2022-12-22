@@ -40,7 +40,10 @@ public class ProduitService implements IDAO<Produit> {
 
     @Override
     public boolean delete(Produit o) {
-        return false;
+        session.beginTransaction();
+        session.delete(o);
+        session.getTransaction().commit();
+        return true;
     }
 
     @Override

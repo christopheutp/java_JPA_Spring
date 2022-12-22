@@ -41,6 +41,15 @@ public class ProduitController {
         return null;
     }
 
+    @GetMapping("/delete/{id}")
+    public String deleteProduit(@PathVariable("id") Integer id) {
+        Produit p = produitService.findById(id);
+        if(p != null && produitService.delete(p)){
+            return "Suppression OK";
+        }
+        return "Aucun produit avec cette id";
+    }
+
     @PostMapping("/update/{id}")
     public Produit updateProduit(@PathVariable("id") Integer id,@RequestBody Produit produit){
         Produit exisProduit = produitService.findById(id);
