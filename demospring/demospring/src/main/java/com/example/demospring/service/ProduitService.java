@@ -23,7 +23,10 @@ public class ProduitService implements IDAO<Produit> {
 
     @Override
     public boolean create(Produit o) {
-        return false;
+        session.beginTransaction();
+        session.persist(o);
+        session.getTransaction().commit();
+        return true;
     }
 
     @Override
