@@ -6,6 +6,7 @@ import com.example.demospring.tools.ServiceHibernate;
 import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
+import org.hibernate.query.Query;
 import java.util.List;
 
 @Service
@@ -41,11 +42,15 @@ public class ProduitService implements IDAO<Produit> {
 
     @Override
     public Produit findById(int id) {
-        return null;
+        Produit produit = null;
+        produit = (Produit) session.get(Produit.class,id);
+        return produit;
     }
 
     @Override
     public List<Produit> findAll() {
-        return null;
+
+        Query<Produit> produitQuery = session.createQuery("from Produit", Produit.class);
+        return produitQuery.list();
     }
 }
